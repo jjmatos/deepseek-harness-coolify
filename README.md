@@ -18,9 +18,14 @@ Configura estas variables en Coolify → Environment Variables:
 3. Base Directory: `/`
 4. Docker Compose file location: `docker-compose.yml`
 5. Añ¡¡¡ade las variables de entorno arriba.
-6. En **Domains**, asigna `https://dh.coolif.qzz.io:3080` al servicio `deepseek-harness` en el puerto `3080`.
+6. En **Domains**, asigna `https://dh.coolif.qzz.io:3080` al servicio `proxy` en el puerto `80`.
 
-El contenedor ejecuta `dsh web --port 3080` y expone la UI web en el puerto 3080.
+## Acceso
+
+- **IP directa**: `http://193.122.1.163:3080`
+- **Coolify domain**: `https://dh.coolif.qzz.io:3080`
+
+El proxy nginx escucha en el puerto 80 del contenedor (mapeado a 3080 en el host) y redirige a deepseek-harness:3080.
 
 ## Notas sobre 9router
 
@@ -30,6 +35,6 @@ El contenedor ejecuta `dsh web --port 3080` y expone la UI web en el puerto 3080
 ## Notas técnicas
 
 - Para Oracle ARM, esta imagen usa `node:22-bookworm-slim`, que tiene soporte `linux/arm64`.
-- El healthcheck verifica que el servicio esté respondiendo en el puerto 3080 (120s de gracia).
 - dsh se instala globalmente en el build para evitar problemas con npx en runtime.
 - El flag --host no se usa porque dsh no lo permite (solo acepta 127.0.0.1 por seguridad).
+- nginx actua como proxy inverso para exponer el servicio externamente.
