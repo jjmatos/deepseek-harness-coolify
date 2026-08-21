@@ -25,8 +25,9 @@ services:
     restart: unless-stopped
     ports:
       - "3080:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    configs:
+      - source: nginx_conf
+        target: /etc/nginx/nginx.conf
     depends_on:
       - deepseek-harness
     networks:
@@ -41,3 +42,7 @@ services:
 networks:
   app-network:
     driver: bridge
+
+configs:
+  nginx_conf:
+    file: ./nginx.conf
