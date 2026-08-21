@@ -18,14 +18,14 @@ Configura estas variables en Coolify → Environment Variables:
 3. Base Directory: `/`
 4. Docker Compose file location: `docker-compose.yml`
 5. Añ¡¡¡ade las variables de entorno arriba.
-6. En **Domains**, asigna `https://dh.coolif.qzz.io:3080` al servicio `proxy` en el puerto `80`.
+6. En **Domains**, asigna `https://dh.coolif.qzz.io:3081` al servicio `proxy` en el puerto `80`.
 
 ## Acceso
 
-- **IP directa**: `http://193.122.1.163:3080`
-- **Coolify domain**: `https://dh.coolif.qzz.io:3080`
+- **IP directa**: `http://193.122.1.163:3081`
+- **Coolify domain**: `https://dh.coolif.qzz.io:3081`
 
-El proxy nginx escucha en el puerto 80 del contenedor (mapeado a 3080 en el host) y redirige a deepseek-harness:8080.
+El proxy nginx escucha en el puerto 80 del contenedor (mapeado a 3081 en el host) y redirige a deepseek-harness:8080.
 
 ## Notas sobre 9router
 

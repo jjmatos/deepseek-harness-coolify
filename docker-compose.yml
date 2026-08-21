@@ -29,7 +29,7 @@ services:
     container_name: deepseek-proxy
     restart: unless-stopped
     ports:
-      - "3080:80"
+      - "3081:80"
     depends_on:
       - deepseek-harness
     networks:
