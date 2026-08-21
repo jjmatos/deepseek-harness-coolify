@@ -19,5 +19,5 @@ RUN dsh --version || true
 
 EXPOSE 3080
 
-# Ejecutar directamente el comando
-CMD ["dsh", "web", "--host", "0.0.0.0", "--port", "3080"]
+# Ejecutar directamente el comando (sin --host, dsh no lo permite)
+CMD ["dsh", "web", "--port", "3080"]
