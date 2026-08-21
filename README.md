@@ -25,7 +25,7 @@ Configura estas variables en Coolify → Environment Variables:
 - **IP directa**: `http://193.122.1.163:3080`
 - **Coolify domain**: `https://dh.coolif.qzz.io:3080`
 
-El proxy nginx escucha en el puerto 80 del contenedor (mapeado a 3080 en el host) y redirige a deepseek-harness:3080.
+El proxy nginx escucha en el puerto 80 del contenedor (mapeado a 3080 en el host) y redirige a deepseek-harness:8080.
 
 ## Notas sobre 9router
 
@@ -39,4 +39,4 @@ El proxy nginx escucha en el puerto 80 del contenedor (mapeado a 3080 en el host
 - El flag --host no se usa porque dsh no lo permite (solo acepta 127.0.0.1 por seguridad).
 - nginx actua como proxy inverso para exponer el servicio externamente.
 - nginx se construye con el config incluido (nginx.Dockerfile) para evitar problemas de montaje en Coolify.
-- socat redirige tráfico de 0.0.0.0:3080 a 127.0.0.1:3080 dentro del contenedor de dsh.
+- socat redirige tráfico de 0.0.0.0:8080 a 127.0.0.1:3080 dentro del contenedor de dsh.
