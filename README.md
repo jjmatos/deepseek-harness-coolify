@@ -38,3 +38,4 @@ El proxy nginx escucha en el puerto 80 del contenedor (mapeado a 3080 en el host
 - dsh se instala globalmente en el build para evitar problemas con npx en runtime.
 - El flag --host no se usa porque dsh no lo permite (solo acepta 127.0.0.1 por seguridad).
 - nginx actua como proxy inverso para exponer el servicio externamente.
+- nginx se construye con el config incluido (nginx.Dockerfile) para evitar problemas de montaje en Coolify.

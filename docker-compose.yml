@@ -20,14 +20,13 @@ services:
       start_period: 120s
 
   proxy:
-    image: nginx:alpine
+    build:
+      context: .
+      dockerfile: nginx.Dockerfile
     container_name: deepseek-proxy
     restart: unless-stopped
     ports:
       - "3080:80"
-    configs:
-      - source: nginx_conf
-        target: /etc/nginx/nginx.conf
     depends_on:
       - deepseek-harness
     networks:
@@ -42,7 +41,3 @@ services:
 networks:
   app-network:
     driver: bridge
-
-configs:
-  nginx_conf:
-    file: ./nginx.conf

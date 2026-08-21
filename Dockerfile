@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Habilitar corepack
 RUN corepack enable
 
-# Instalar dsh globalmente (evita problemas con npx en runtime)
+# Instalar dsh globalmente
 RUN npm install -g @deepseek-ai/dsh@0.1.0-rc.7
 
 # Verificar instalación
@@ -19,5 +19,4 @@ RUN dsh --version || true
 
 EXPOSE 3080
 
-# Ejecutar directamente el comando (sin --host, dsh no lo permite)
 CMD ["dsh", "web", "--port", "3080"]
