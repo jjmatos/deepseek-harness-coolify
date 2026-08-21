@@ -8,13 +8,33 @@ services:
       - "3080:3080"
     environment:
       NODE_ENV: production
-      OPENAI_API_BASE: ${OPENAI_API_BASE:?}
-      OPENAI_BASE_URL: ${OPENAI_BASE_URL:?}
+      OPENAI_API_BASE: http://9router:3000/v1
+      OPENAI_BASE_URL: http://9router:3000/v1
       OPENAI_API_KEY: ${OPENAI_API_KEY:?}
       OPENAI_MODEL: ${OPENAI_MODEL:?}
+    depends_on:
+      - 9router
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3080"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 60s
+
+  9router:
+    image: tu-imagen-9router:latest
+    container_name: 9router
+    restart: unless-stopped
+    expose:
+      - "3000"
+    environment:
+      # Aquí van las variables de entorno de tu 9router
+      # Ejemplo:
+      # API_KEY: tu-api-key
+      # PORT: 3000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
