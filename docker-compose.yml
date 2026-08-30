@@ -3,7 +3,10 @@ services:
     build: .
     container_name: deepseek-harness
     restart: unless-stopped
-    command: "dsh web --port 3081 --host 0.0.0.0"
+    command: >
+      sh -c "nohup socat TCP-LISTEN:8081,fork TCP:127.0.0.1:3081 &
+             sleep 2
+             dsh web --port 3081"
     environment:
       NODE_ENV: production
       OPENAI_API_BASE: 'http://9router:3000/v1'
@@ -12,7 +15,37 @@ services:
       OPENAI_MODEL: '${OPENAI_MODEL:?}'
     networks:
       - app-network
-    # Coolify gestionará dominio + HTTPS automáticamente
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - '-f'
+        - 'http://localhost:8081'
+      interval: 60s
+      timeout: 30s
+      retries: 5
+      start_period: 120s
+
+  proxy:
+    build:
+      context: .
+      dockerfile: nginx.Dockerfile
+    container_name: deepseek-proxy
+    restart: unless-stopped
+    depends_on:
+      - deepseek-harness
+    networks:
+      - app-network
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - '-f'
+        - 'http://localhost:80'
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
 networks:
   app-network:
