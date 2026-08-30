@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     command: >
       sh -c "nohup socat TCP-LISTEN:8081,fork TCP:127.0.0.1:3081 &
-             sleep 2
+             sleep 3
              dsh web --port 3081"
     environment:
       NODE_ENV: production
@@ -16,11 +16,7 @@ services:
     networks:
       - app-network
     healthcheck:
-      test:
-        - CMD
-        - curl
-        - '-f'
-        - 'http://localhost:8081'
+      test: ["CMD", "curl", "-f", "http://localhost:8081"]
       interval: 60s
       timeout: 30s
       retries: 5
@@ -33,15 +29,12 @@ services:
     container_name: deepseek-proxy
     restart: unless-stopped
     depends_on:
-      - deepseek-harness
+      deepseek-harness:
+        condition: service_healthy
     networks:
       - app-network
     healthcheck:
-      test:
-        - CMD
-        - curl
-        - '-f'
-        - 'http://localhost:80'
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
       interval: 30s
       timeout: 10s
       retries: 3
