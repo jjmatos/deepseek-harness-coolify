@@ -24,6 +24,8 @@ services:
       OPENAI_MODEL: '${OPENAI_MODEL:?}'
     networks:
       - app-network
+    expose:
+      - "8081"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8081"]
       interval: 60s
@@ -37,6 +39,8 @@ services:
       dockerfile: nginx.Dockerfile
     container_name: deepseek-proxy
     restart: unless-stopped
+    ports:
+      - "3871:80"  # ← Añade esto para mapeo manual
     depends_on:
       deepseek-harness:
         condition: service_healthy
