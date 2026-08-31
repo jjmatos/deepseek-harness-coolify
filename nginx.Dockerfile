@@ -1,9 +1,26 @@
-FROM nginx:alpine
+events {
+    worker_connections 1024;
+}
 
-RUN apk add --no-cache curl
+http {
+    upstream deepseek {
+        server deepseek-harness:9081;
+    }
 
-COPY nginx.conf /etc/nginx/nginx.conf
+    server {
+        listen 80;
+        server_name _;
 
-EXPOSE 80
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
 
-CMD ["nginx", "-g", "daemon off;"]
+        location / {
+            proxy_pass http://deepseek;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+        }
+    }
+}
