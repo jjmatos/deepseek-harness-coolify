@@ -3,19 +3,6 @@ services:
     build: .
     container_name: deepseek-harness
     restart: unless-stopped
-    command: >
-      sh -c "dsh web --port 8081 --no-open &
-             DSH_PID=$$!;
-             echo 'Waiting for dsh to start...';
-             for i in $$(seq 1 30); do
-               if curl -s http://127.0.0.1:8081 >/dev/null 2>&1; then
-                 echo 'dsh is ready!';
-                 break;
-               fi;
-               sleep 1;
-             done;
-             echo 'Starting socat...';
-             exec socat TCP-LISTEN:9081,fork TCP:127.0.0.1:8081"
     environment:
       NODE_ENV: production
       OPENAI_API_BASE: 'http://9router:3000/v1'
@@ -27,7 +14,7 @@ services:
     expose:
       - "9081"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9081"]
+      test: ["CMD", "curl", "-f", "http://localhost:8081"]
       interval: 60s
       timeout: 30s
       retries: 5
