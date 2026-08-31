@@ -1,19 +1,16 @@
-FROM node:22-bookworm-slim
+FROM node:20-alpine
+
+RUN apk add --no-cache git socat curl bash
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl \
-    ca-certificates \
-    socat \
-    && rm -rf /var/lib/apt/lists/*
+# Instala DeepSeek Harness (versión más reciente)
+RUN npm install -g @deepseek-ai/dsh@0.1.2-alpha.1
 
-RUN corepack enable
+# Copia el script de inicio
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
 
-RUN npm install -g @deepseek-ai/dsh@0.1.0-rc.7
+EXPOSE 8081 9081
 
-RUN dsh --version || true
-
-EXPOSE 3081
-
-CMD ["dsh", "web", "--port", "3081"]
+CMD ["/start.sh"]
